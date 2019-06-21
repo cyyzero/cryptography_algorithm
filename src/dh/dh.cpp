@@ -8,16 +8,20 @@ uint64_t pow(uint64_t x, uint64_t y, uint64_t q)
 {
     if (y == 0)
         return 1;
-    auto tmp = pow((x * x) % q, y/2, q);
+    auto tmp = pow(uint64_t(__uint128_t(x * x) % q), y/2, q);
+    auto tmp2 = uint64_t(__uint128_t(tmp * tmp) % q);
     if (y % 2 == 1)
     {
-        return (((tmp * tmp) % q) * x) % q;
+        return uint64_t(__uint128_t(tmp2 * x) % q);
     }
     else
     {
-        return (tmp * tmp) % q;
+        return tmp2;
     }
 }
+
+
+
 }
 
 dh::dh(uint64_t q_, uint64_t a_)

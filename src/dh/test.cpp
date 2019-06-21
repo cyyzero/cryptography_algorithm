@@ -4,7 +4,7 @@
 #include <cassert>
 #include <cstdlib>
 
-#define TEST_HD(q, a)                              \
+#define TEST_DH(q, a)                              \
     {                                              \
         dh d1(q, a);                               \
         dh d2(q, a);                               \
@@ -17,7 +17,7 @@
 int main()
 {
     srand(time(0));
-    TEST_HD(19, 13);
-    TEST_HD(19, 2);
-    TEST_HD(19, 15);
+    TEST_DH(19, 13);
+    TEST_DH(19, 2);
+    TEST_DH(19, 15);
 }
