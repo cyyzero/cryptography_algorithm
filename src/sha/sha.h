@@ -13,7 +13,7 @@ public:
     SHA512(const std::string& raw);
     std::array<uint64_t, 8> get_hash();
 private:
-    void pandding_and_append();
+    void padding_and_append();
     void calculate();
 
     std::array<uint64_t, 8> hash_;

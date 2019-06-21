@@ -67,7 +67,7 @@ SHA512::SHA512(const std::string &raw)
           0x5be0cd19137e2179},
       msg_(raw.begin(), raw.end())
 {
-    pandding_and_append();
+    padding_and_append();
     std::cout << msg_.size() << "\n";
     assert(msg_.size() % 128 == 0);
     calculate();
@@ -78,7 +78,7 @@ std::array<uint64_t, 8> SHA512::get_hash()
     return hash_;
 }
 
-void SHA512::pandding_and_append()
+void SHA512::padding_and_append()
 {
     __uint128_t len = msg_.size() * 8;
     msg_.push_back(0x80);
