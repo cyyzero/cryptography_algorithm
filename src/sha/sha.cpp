@@ -13,6 +13,36 @@
 #define SHA512_F3(x) (SHA2_ROTR(x, 1) ^ SHA2_ROTR(x, 8) ^ SHA2_SHFR(x, 7))
 #define SHA512_F4(x) (SHA2_ROTR(x, 19) ^ SHA2_ROTR(x, 61) ^ SHA2_SHFR(x, 6))
 
+namespace
+{
+
+void sha_unpack64(uint8_t* str, uint64_t x)
+{
+    for (int i = 0; i < 16; ++i)
+    {
+        str[i] = static_cast<uint8_t>(x >> (56 - i * 8));
+    }
+}
+
+void sha_unpack128(uint8_t* str, __uint128_t x)
+{
+    for (int i = 0; i < 16; ++i)
+    {
+        str[i] = static_cast<uint8_t>(x >> (120 - i * 8));
+    }
+}
+
+uint64_t sha_pack64(const uint8_t* str)
+{
+    uint64_t x = 0;
+    for (int i = 0; i < 8; ++i)
+    {
+        x |= (static_cast<uint64_t>(str[i]) << (56-i*8));
+    }
+    return x;
+}
+};
+
 const uint64_t SHA512::sha512_k[80] = //  = uint64
     {0x428a2f98d728ae22, 0x7137449123ef65cd,
      0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc,
@@ -68,12 +98,11 @@ SHA512::SHA512(const std::string &raw)
       msg_(raw.begin(), raw.end())
 {
     padding_and_append();
-    std::cout << msg_.size() << "\n";
     assert(msg_.size() % 128 == 0);
     calculate();
 }
 
-std::array<uint64_t, 8> SHA512::get_hash()
+std::array<uint64_t, 8> SHA512::get_hash() const
 {
     return hash_;
 }
@@ -84,8 +113,9 @@ void SHA512::padding_and_append()
     msg_.push_back(0x80);
     while (msg_.size() % 128 != 112)
         msg_.push_back(0);
-    for (int i = 15; i >= 0; --i)
-        msg_.push_back(((uint8_t *)&len)[i]);
+    for (int i = 0; i < 16; ++i)
+        msg_.push_back(static_cast<uint8_t>(len >> (120 - i * 8)));
+    assert(msg_.size() % 128 == 0);
 }
 
 void SHA512::calculate()
@@ -93,15 +123,13 @@ void SHA512::calculate()
     uint64_t t1, t2;
     const uint8_t *block;
     std::array<uint64_t, 80> w;
-    std::cout << "start" << std::endl;
     for (size_t i = 0; i < msg_.size() / 128; ++i)
     {
-        std::cout << "i:" << i << std::endl;
         auto hash_tmp = hash_;
         block = msg_.data() + i * 128;
         for (int j = 0; j < 16; ++j)
         {
-            w[j] = *(uint64_t *)&block[j * 8];
+            w[j] = sha_pack64(block + j * 8);
         }
         for (int j = 16; j < 80; ++j)
         {
