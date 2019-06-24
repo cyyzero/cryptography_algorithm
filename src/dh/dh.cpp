@@ -19,30 +19,25 @@ uint64_t pow(uint64_t x, uint64_t y, uint64_t q)
         return tmp2;
     }
 }
-
-
-
 }
 
-dh::dh(uint64_t q_, uint64_t a_)
-    : q(q_), a(a_), x(random() % q), y(pow(a, x, q))
+dh::dh(uint64_t q, uint64_t a)
+    : q_(q), a_(a), x_(random() % q_), y_(pow(a_, x_, q_))
 {
 }
 
-uint64_t dh::cal_k(uint64_t y_)
+uint64_t dh::cal_k(uint64_t y)
 {
-    k = pow(y_, x, q);
-    return k;
+    k_ = pow(y, x_, q_);
+    return k_;
 }
 
 uint64_t dh::get_k() const
 {
-    return k;
+    return k_;
 }
 
 uint64_t dh::get_y() const
 {
-    return y;
+    return y_;
 }
-
-
