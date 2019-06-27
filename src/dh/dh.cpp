@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <iostream>
 #include "dh.h"
 
 namespace
@@ -19,6 +20,23 @@ uint64_t pow(uint64_t x, uint64_t y, uint64_t q)
         return tmp2;
     }
 }
+
+bool is_prime(uint64_t num)
+{
+    if (num <= 1)
+    {
+        return false;
+    }
+    for (uint64_t i = 2; i < num; ++i)
+    {
+        if (num % i == 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 }
 
 dh::dh(uint64_t q, uint64_t a)
