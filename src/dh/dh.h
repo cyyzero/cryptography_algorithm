@@ -2,6 +2,7 @@
 #define __HD_H
 
 #include <stdint.h>
+#include <utility>
 
 class dh
 {
@@ -17,5 +18,7 @@ private:
     uint64_t y_;
     uint64_t k_;
 };
+
+std::pair<uint64_t, uint64_t> generate_q_a();
 
 #endif // __HD_H

@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cmath>
 #include <iostream>
 #include "dh.h"
 
@@ -27,11 +28,12 @@ bool is_prime(uint64_t num)
     {
         return false;
     }
-    for (uint64_t i = 2; i < num; ++i)
+    auto sqrt = std::sqrt(num);
+    for (uint64_t i = 2; i <= sqrt; ++i)
     {
         if (num % i == 0)
         {
-            return false;
+            return false; 
         }
     }
     return true;
@@ -58,4 +60,14 @@ uint64_t dh::get_k() const
 uint64_t dh::get_y() const
 {
     return y_;
+}
+
+std::pair<uint64_t, uint64_t> generate_q_a()
+{
+    int q, a;
+    do {
+        q = random();
+    } while (!is_prime(q));
+
+    return {q, a};
 }
