@@ -11,6 +11,9 @@ public:
     uint64_t cal_k(uint64_t y);
     uint64_t get_k() const;
     uint64_t get_y() const;
+
+    static std::pair<uint64_t, uint64_t> generate_q_a();
+
 private:
     uint64_t q_;
     uint64_t a_;
@@ -18,7 +21,5 @@ private:
     uint64_t y_;
     uint64_t k_;
 };
-
-std::pair<uint64_t, uint64_t> generate_q_a();
 
 #endif // __HD_H
