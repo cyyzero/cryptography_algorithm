@@ -1,7 +1,11 @@
 #include <cassert>
 #include <sstream>
+#include <iostream>
 #include <ctime>
+#include <string>
+
 #include "RSA.h"
+#include "utility.h"
 
 /**
  * 函数功能:初始化RSA对象的相关信息
@@ -14,6 +18,8 @@ void RSA::init(const unsigned len) {
     q = createPrime(len, 15);
     // 计算出n
     n = p*q;
+    n_len = n.toString().size()/2;
+    std::cout << n.toString() << std::endl;
     // 计算出n的欧拉函数
     eul = (p-1)*(q-1);
     // 设置加解密指数e和d
@@ -36,6 +42,44 @@ BigInteger RSA::decryptByPrivate(const BigInteger & c) {
     return c.modPow(d, n);
 }
 
+std::string RSA::encryptByPublic(const std::string& m)
+{
+    std::string res;
+    size_t i;
+    for (i = 0; i < m.size(); i++)
+    {
+        auto to_append = encryptByPublic(BigInteger((long long)m[i])).toString();
+        while (to_append.size() % 4 != 0)
+            to_append = "0" + to_append;
+        assert(to_append.size() == 4);
+        res.append(to_append);
+    }
+
+    return res;
+}
+
+std::string RSA::decryptByPrivate(const std::string& c)
+{
+    std::string res;
+    for (size_t i = 0; i < c.size(); i += 4)
+    {
+        auto integer = RSA::decryptByPrivate(BigInteger(std::string(c, i, 4))).toString();
+        int dec = 0;
+        for (auto ch: integer)
+        {
+            dec*=16;
+            if (ch >= 'a' && ch <= 'f')
+                dec += (10 + ch - 'a');
+            else if (ch >= 'A' && ch <= 'F')
+                dec += (10 + ch - 'A');
+            else
+                dec += (ch - '0');
+        }
+        res.push_back(dec);
+    }
+    return res;
+}
+
 /**
  * 函数功能:使用私钥进行加密
  * 参数含义:m表示要加密的明文
@@ -50,6 +94,46 @@ BigInteger RSA::encryptByPrivate(const BigInteger & m) {
  */
 BigInteger RSA::decryptByPublic(const BigInteger & c) {
     return encryptByPublic(c);
+}
+
+
+std::string RSA::encryptByPrivate(const std::string& m)
+{
+    std::string res;
+    size_t i;
+    for (i = 0; i < m.size(); i++)
+    {
+        auto to_append = encryptByPrivate(BigInteger((long long)m[i])).toString();
+        while (to_append.size() % 4 != 0)
+            to_append = "0" + to_append;
+        assert(to_append.size() == 4);
+        res.append(to_append);
+    }
+
+    return res;
+
+}
+
+std::string RSA::decryptByPublic(const std::string& c)
+{
+    std::string res;
+    for (size_t i = 0; i < c.size(); i += 4)
+    {
+        auto integer = RSA::decryptByPublic(BigInteger(std::string(c, i, 4))).toString();
+        int dec = 0;
+        for (auto ch: integer)
+        {
+            dec*=16;
+            if (ch >= 'a' && ch <= 'f')
+                dec += (10 + ch - 'a');
+            else if (ch >= 'A' && ch <= 'F')
+                dec += (10 + ch - 'A');
+            else
+                dec += (ch - '0');
+        }
+        res.push_back(dec);
+    }
+    return res;
 }
 
 /**

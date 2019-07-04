@@ -14,9 +14,16 @@ public:
     BigInteger encryptByPublic(const BigInteger &);    // 公钥加密
     BigInteger decryptByPrivate(const BigInteger &);// 私钥解密
 
+    std::string encryptByPublic(const std::string&);
+    std::string decryptByPrivate(const std::string&);
+
     // 以下主要用于数字签名
     BigInteger encryptByPrivate(const BigInteger &);// 私钥加密
     BigInteger decryptByPublic(const BigInteger &);    // 公钥解密
+
+    std::string encryptByPrivate(const std::string&);
+    std::string decryptByPublic(const std::string&);
+
 protected:
     friend std::ostream & operator << (std::ostream &, const RSA &);// 输出相关数据
 private:
@@ -31,6 +38,7 @@ private:
     BigInteger d;// 私钥
     BigInteger p, q;// 大素数p和q
     BigInteger eul;// n的欧拉函数
+    size_t n_len;
 };
 
 #endif // __RSA_H__
