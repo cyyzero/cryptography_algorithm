@@ -11,26 +11,33 @@
  * 函数功能:初始化RSA对象的相关信息
  * 参数含义:len表示大素数的二进制位数
  */
-void RSA::init(const unsigned len) {
+void RSA::init(const unsigned len)
+{
     srand((unsigned)time(NULL));
     // 产生大素数p和q
-    p = createPrime(len, 15);// 出错概率为(1/4)^15
+    p = createPrime(len, 15); // 出错概率为(1/4)^15
     q = createPrime(len, 15);
     // 计算出n
-    n = p*q;
-    n_len = n.toString().size()/2;
+    n = p * q;
+    n_len = n.toString().size() / 2;
     std::cout << n.toString() << std::endl;
     // 计算出n的欧拉函数
-    eul = (p-1)*(q-1);
+    eul = (p - 1) * (q - 1);
     // 设置加解密指数e和d
     createExponent(eul);
+}
+
+RSA::Key RSA::get_public_key() const
+{
+    return std::make_pair(e, n);
 }
 
 /**
  * 函数功能:使用公钥进行加密
  * 参数含义:m表示要加密的明文
  */
-BigInteger RSA::encryptByPublic(const BigInteger & m) {
+BigInteger RSA::encryptByPublic(const BigInteger &m) const
+{
     return m.modPow(e, n);
 }
 
@@ -38,11 +45,12 @@ BigInteger RSA::encryptByPublic(const BigInteger & m) {
  * 函数功能:使用私钥进行解密
  * 参数含义:c表示要解密的密文
  */
-BigInteger RSA::decryptByPrivate(const BigInteger & c) {
+BigInteger RSA::decryptByPrivate(const BigInteger &c) const
+{
     return c.modPow(d, n);
 }
 
-std::string RSA::encryptByPublic(const std::string& m)
+std::string RSA::encryptByPublic(const std::string &m) const
 {
     std::string res;
     size_t i;
@@ -58,16 +66,16 @@ std::string RSA::encryptByPublic(const std::string& m)
     return res;
 }
 
-std::string RSA::decryptByPrivate(const std::string& c)
+std::string RSA::decryptByPrivate(const std::string &c) const
 {
     std::string res;
     for (size_t i = 0; i < c.size(); i += 4)
     {
         auto integer = RSA::decryptByPrivate(BigInteger(std::string(c, i, 4))).toString();
         int dec = 0;
-        for (auto ch: integer)
+        for (auto ch : integer)
         {
-            dec*=16;
+            dec *= 16;
             if (ch >= 'a' && ch <= 'f')
                 dec += (10 + ch - 'a');
             else if (ch >= 'A' && ch <= 'F')
@@ -84,7 +92,8 @@ std::string RSA::decryptByPrivate(const std::string& c)
  * 函数功能:使用私钥进行加密
  * 参数含义:m表示要加密的明文
  */
-BigInteger RSA::encryptByPrivate(const BigInteger & m) {
+BigInteger RSA::encryptByPrivate(const BigInteger &m) const
+{
     return decryptByPrivate(m);
 }
 
@@ -92,12 +101,12 @@ BigInteger RSA::encryptByPrivate(const BigInteger & m) {
  * 函数功能:使用公钥进行解密
  * 参数含义:c表示要解密的密文
  */
-BigInteger RSA::decryptByPublic(const BigInteger & c) {
+BigInteger RSA::decryptByPublic(const BigInteger &c) const
+{
     return encryptByPublic(c);
 }
 
-
-std::string RSA::encryptByPrivate(const std::string& m)
+std::string RSA::encryptByPrivate(const std::string &m) const
 {
     std::string res;
     size_t i;
@@ -111,19 +120,18 @@ std::string RSA::encryptByPrivate(const std::string& m)
     }
 
     return res;
-
 }
 
-std::string RSA::decryptByPublic(const std::string& c)
+std::string RSA::decryptByPublic(const std::string &c) const
 {
     std::string res;
     for (size_t i = 0; i < c.size(); i += 4)
     {
-        auto integer = RSA::decryptByPublic(BigInteger(std::string(c, i, 4))).toString();
+        auto integer = decryptByPublic(BigInteger(std::string(c, i, 4))).toString();
         int dec = 0;
-        for (auto ch: integer)
+        for (auto ch : integer)
         {
-            dec*=16;
+            dec *= 16;
             if (ch >= 'a' && ch <= 'f')
                 dec += (10 + ch - 'a');
             else if (ch >= 'A' && ch <= 'F')
@@ -140,7 +148,8 @@ std::string RSA::decryptByPublic(const std::string& c)
  * 函数功能:输出RSA相关数据
  * 参数含义:out表示输出流,rsa表示要输出的RSA对象
  */
-std::ostream & operator << (std::ostream & out, const RSA & rsa) {
+std::ostream &operator<<(std::ostream &out, const RSA &rsa)
+{
     out << "n: " << rsa.n << "\n";
     out << "p: " << rsa.p << "\n";
     out << "q: " << rsa.q << "\n";
@@ -153,15 +162,17 @@ std::ostream & operator << (std::ostream & out, const RSA & rsa) {
  * 函数功能:生成一个长度为len的奇数
  * 参数含义:len代表奇数的二进制长度
  */
-BigInteger RSA::createOddNum(unsigned len) {
+BigInteger RSA::createOddNum(unsigned len)
+{
     static const char hex_table[] = {'0', '1', '2', '3', '4', '5', '6', '7',
-                                    '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-    len >>= 2;    // 十六进制数据,每位占4位二进制
-    if (len) {
+                                     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    len >>= 2; // 十六进制数据,每位占4位二进制
+    if (len)
+    {
         std::ostringstream oss;
-        for (size_t i=0; i<len-1; ++i)
-            oss << hex_table[rand()%16];
-        oss << hex_table[1];// 最后一位为奇数
+        for (size_t i = 0; i < len - 1; ++i)
+            oss << hex_table[rand() % 16];
+        oss << hex_table[1]; // 最后一位为奇数
         return BigInteger(oss.str());
     }
     return BigInteger("F");
@@ -171,61 +182,68 @@ BigInteger RSA::createOddNum(unsigned len) {
  * 函数功能:判断一个数是否为素数,采用米勒拉宾大素数检测算法,失误率为(1/4)^k
  * 参数含义:num代表要判定的数,k代表测试次数
  */
-bool RSA::isPrime(const BigInteger & num, const unsigned k) {
-    assert(num != BigInteger::ZERO);// 测试num是否为0
+bool RSA::isPrime(const BigInteger &num, const unsigned k)
+{
+    assert(num != BigInteger::ZERO); // 测试num是否为0
     if (num == BigInteger::ONE)
-        return false;    // 1不是素数
+        return false; // 1不是素数
     if (num == BigInteger::TWO)
-        return true;    // 2是素数
+        return true; // 2是素数
 
-    BigInteger t = num-1;
-    BigInteger::bit b(t);// 二进制数
-    if (b.at(0) == 1)    // 减一之后为奇数,原数为偶数
+    BigInteger t = num - 1;
+    BigInteger::bit b(t); // 二进制数
+    if (b.at(0) == 1)     // 减一之后为奇数,原数为偶数
         return false;
     // num-1 = 2^s*d
-    size_t s = 0;    // 统计二进制末尾有几个0
+    size_t s = 0; // 统计二进制末尾有几个0
     BigInteger d(t);
-    for (size_t i=0; i<b.size(); ++i) {
-        if (!b.at(i)) {
+    for (size_t i = 0; i < b.size(); ++i)
+    {
+        if (!b.at(i))
+        {
             ++s;
-            d = d.shiftRight(1);// 计算出d
+            d = d.shiftRight(1); // 计算出d
         }
         else
             break;
     }
 
-    for (size_t i=0; i<k; ++i) {// 测试k次
-        BigInteger a = createRandomSmaller(num);// 生成一个介于[1,num-1]之间的随机数a
+    for (size_t i = 0; i < k; ++i)
+    {                                            // 测试k次
+        BigInteger a = createRandomSmaller(num); // 生成一个介于[1,num-1]之间的随机数a
         BigInteger x = a.modPow(d, num);
-        if (x == BigInteger::ONE)// 可能为素数
+        if (x == BigInteger::ONE) // 可能为素数
             continue;
         bool ok = true;
         // 测试所有0<=j<s,a^(2^j*d) mod num != -1
-        for (size_t j=0; j<s && ok; ++j) {
+        for (size_t j = 0; j < s && ok; ++j)
+        {
             if (x == t)
-                ok = false;    // 有一个相等,可能为素数
+                ok = false; // 有一个相等,可能为素数
             x = x.multiply(x).mod(num);
         }
-        if (ok)    // 确实都不等,一定为合数
+        if (ok) // 确实都不等,一定为合数
             return false;
     }
-    return true;    // 通过所有测试,可能为素数
+    return true; // 通过所有测试,可能为素数
 }
 
 /**
  * 函数功能:随机生成一个比val小的数
  * 参数含义:val代表比较的那个数
  */
-BigInteger RSA::createRandomSmaller(const BigInteger & val) {
+BigInteger RSA::createRandomSmaller(const BigInteger &val)
+{
     BigInteger::base_t t = 0;
-    do {
+    do
+    {
         t = rand();
-    } while (t == 0);// 随机生成非0数
+    } while (t == 0); // 随机生成非0数
 
     BigInteger mod(t);
-    BigInteger ans = mod%val;    // 比val要小
-    if (ans == BigInteger::ZERO)// 必须非零
-        ans = val-BigInteger::ONE;
+    BigInteger ans = mod % val;  // 比val要小
+    if (ans == BigInteger::ZERO) // 必须非零
+        ans = val - BigInteger::ONE;
     return ans;
 }
 
@@ -233,11 +251,13 @@ BigInteger RSA::createRandomSmaller(const BigInteger & val) {
  * 函数功能:生成一个二进制长度为len的大素数
  * 参数含义:len代表大素数的长度,k代表素数检测的次数
  */
-BigInteger RSA::createPrime(unsigned len, const unsigned k) {
+BigInteger RSA::createPrime(unsigned len, const unsigned k)
+{
     assert(k > 0);
-    BigInteger ans = createOddNum(len);// 先生成一个奇数
-    while (!isPrime(ans, k)) {// 素性检测
-        ans = ans.add(BigInteger::TWO);// 下一个奇数
+    BigInteger ans = createOddNum(len); // 先生成一个奇数
+    while (!isPrime(ans, k))
+    {                                   // 素性检测
+        ans = ans.add(BigInteger::TWO); // 下一个奇数
     }
     return ans;
 }
@@ -246,7 +266,57 @@ BigInteger RSA::createPrime(unsigned len, const unsigned k) {
  * 函数功能:根据提供的欧拉数生成公钥、私钥指数
  * 参数含义:eul表示提供的欧拉数
  */
-void RSA::createExponent(const BigInteger & eul) {
+void RSA::createExponent(const BigInteger &eul)
+{
     e = 65537;
     d = e.modInverse(eul);
+}
+
+BigInteger RSA::encryptByPublic(const BigInteger& m, const RSA::Key& key)
+{
+    return m.modPow(key.first, key.second);
+}
+
+std::string RSA::encryptByPublic(const std::string& m, const RSA::Key& key)
+{
+    std::string res;
+    size_t i;
+    for (i = 0; i < m.size(); i++)
+    {
+        auto to_append = encryptByPublic(BigInteger((long long)m[i]), key).toString();
+        while (to_append.size() % 4 != 0)
+            to_append = "0" + to_append;
+        assert(to_append.size() == 4);
+        res.append(to_append);
+    }
+
+    return res;
+}
+
+// 以下主要用于数字签名
+BigInteger RSA::decryptByPublic(const BigInteger& c, const RSA::Key& key)
+{
+    return c.modPow(key.first, key.second);
+}
+
+std::string RSA::decryptByPublic(const std::string& c, const RSA::Key& key)
+{
+    std::string res;
+    for (size_t i = 0; i < c.size(); i += 4)
+    {
+        auto integer = decryptByPublic(BigInteger(std::string(c, i, 4)), key).toString();
+        int dec = 0;
+        for (auto ch : integer)
+        {
+            dec *= 16;
+            if (ch >= 'a' && ch <= 'f')
+                dec += (10 + ch - 'a');
+            else if (ch >= 'A' && ch <= 'F')
+                dec += (10 + ch - 'A');
+            else
+                dec += (ch - '0');
+        }
+        res.push_back(dec);
+    }
+    return res;
 }

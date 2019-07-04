@@ -9,20 +9,33 @@ public:
     RSA(const unsigned len) { init(len); }    // 利用len初始化对象
     ~RSA() {}
 
+    using Key = std::pair<BigInteger, BigInteger>;
+
     void init(const unsigned);// 初始化,产生公私钥对
 
-    BigInteger encryptByPublic(const BigInteger &);    // 公钥加密
-    BigInteger decryptByPrivate(const BigInteger &);// 私钥解密
+    Key get_public_key() const;
 
-    std::string encryptByPublic(const std::string&);
-    std::string decryptByPrivate(const std::string&);
+    BigInteger encryptByPublic(const BigInteger &) const;    // 公钥加密
+    BigInteger decryptByPrivate(const BigInteger &) const;// 私钥解密
+
+    std::string encryptByPublic(const std::string&) const;
+    std::string decryptByPrivate(const std::string&) const;
 
     // 以下主要用于数字签名
-    BigInteger encryptByPrivate(const BigInteger &);// 私钥加密
-    BigInteger decryptByPublic(const BigInteger &);    // 公钥解密
+    BigInteger encryptByPrivate(const BigInteger &) const;// 私钥加密
+    BigInteger decryptByPublic(const BigInteger &) const;    // 公钥解密
 
-    std::string encryptByPrivate(const std::string&);
-    std::string decryptByPublic(const std::string&);
+    std::string encryptByPrivate(const std::string&) const;
+    std::string decryptByPublic(const std::string&) const;
+
+    static BigInteger encryptByPublic(const BigInteger &, const Key&);    // 公钥加密
+
+    static std::string encryptByPublic(const std::string&, const key&);
+
+    // 以下主要用于数字签名
+    static BigInteger decryptByPublic(const BigInteger &, const Key&);    // 公钥解密
+
+    static std::string decryptByPublic(const std::string&, const Key&);
 
 protected:
     friend std::ostream & operator << (std::ostream &, const RSA &);// 输出相关数据
