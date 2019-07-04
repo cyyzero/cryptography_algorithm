@@ -1,11 +1,3 @@
-/**
- * @Name    : BigInteger.cpp
- * @Date    : 2017-04-11-22.16.42
- * @Author  : Silenceneo (silenceneo_xw@163.com)
- * @Link    : http://www.cnblogs.com/Silenceneo-xw/
- * @Version : 2.0
- */
-
 #include <algorithm>
 #include <cassert>
 #include <cctype>

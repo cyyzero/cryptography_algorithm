@@ -1,11 +1,3 @@
-/**
- * @Name    : RSA.h
- * @Date    : 2017-04-11-22.25.57
- * @Author  : Silenceneo (silenceneo_xw@163.com)
- * @Link    : http://www.cnblogs.com/Silenceneo-xw/
- * @Version : 2.0
- */
-
 #ifndef __RSA_H__
 #define __RSA_H__
 

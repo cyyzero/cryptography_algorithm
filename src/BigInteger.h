@@ -1,13 +1,5 @@
-/**
- * @Name    : BigInteger.h
- * @Date    : 2017-04-11-22.11.39
- * @Author  : Silenceneo (silenceneo_xw@163.com)
- * @Link    : http://www.cnblogs.com/Silenceneo-xw/
- * @Version : 2.0
- */
-
-#ifndef __BIGINTEGER_H__
-#define __BIGINTEGER_H__
+#ifndef BIGINTEGER_H
+#define BIGINTEGER_H
 
 #include <string>
 #include <vector>
