@@ -1,5 +1,7 @@
 #include "utility.h"
 
+#include <string>
+
 uint64_t pow(uint64_t x, uint64_t y, uint64_t q)
 {
     if (y == 0)
@@ -14,4 +16,13 @@ uint64_t pow(uint64_t x, uint64_t y, uint64_t q)
     {
         return tmp;
     }
+}
+
+void print_str(const std::string& str)
+{
+    for (auto ch : str)
+    {
+        printf("%x", (int)ch & 0xff);
+    }
+    printf("\n");
 }
