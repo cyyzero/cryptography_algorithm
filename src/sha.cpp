@@ -18,7 +18,7 @@ namespace
 
 void sha_unpack64(uint8_t* str, uint64_t x)
 {
-    for (int i = 0; i < 16; ++i)
+    for (int i = 0; i < 8; ++i)
     {
         str[i] = static_cast<uint8_t>(x >> (56 - i * 8));
     }
@@ -102,9 +102,16 @@ SHA512::SHA512(const std::string &raw)
     calculate();
 }
 
-std::array<uint64_t, 8> SHA512::get_hash() const
+std::string SHA512::get_hash() const
 {
-    return hash_;
+    std::string hash;
+    uint8_t buf[8];
+    for (auto ch: hash_)
+    {
+        sha_unpack64(buf, ch);
+        hash.append((char*)buf, 8);
+    }
+    return hash;
 }
 
 void SHA512::padding_and_append()
