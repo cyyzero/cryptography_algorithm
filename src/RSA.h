@@ -30,7 +30,7 @@ public:
 
     static BigInteger encryptByPublic(const BigInteger &, const Key&);    // 公钥加密
 
-    static std::string encryptByPublic(const std::string&, const key&);
+    static std::string encryptByPublic(const std::string&, const Key&);
 
     // 以下主要用于数字签名
     static BigInteger decryptByPublic(const BigInteger &, const Key&);    // 公钥解密
