@@ -111,6 +111,7 @@ std::string SHA512::get_hash() const
         sha_unpack64(buf, ch);
         hash.append((char*)buf, 8);
     }
+    assert(hash.size() == 64);
     return hash;
 }
 
