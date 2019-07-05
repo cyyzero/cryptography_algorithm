@@ -20,7 +20,7 @@ public:
     void send_to_merchant(const std::string& message) const;
     void set_merchant_key(const RSA::Key&);
     void set_bank_key(const RSA::Key&);
-    std::array<std::string, 5> gen_request(const Payment_info& pi, const Order_info& oi) const;
+    void gen_request(const Payment_info& pi, const Order_info& oi) const;
 
 private:
     void send(int port, const std::string& msg) const;

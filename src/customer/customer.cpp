@@ -33,8 +33,8 @@ Customer::Customer()
     send_to_merchant(key_str);
 }
 
-std::array<std::string, 5> Customer::gen_request(const Payment_info& pi,
-                                     const Order_info& oi) const
+void Customer::gen_request(const Payment_info& pi,
+                           const Order_info& oi) const
 {
     std::string pi_str(reinterpret_cast<const char*>(&pi), sizeof(pi));
     std::string oi_str(reinterpret_cast<const char*>(&oi), sizeof(oi));
@@ -69,7 +69,11 @@ std::array<std::string, 5> Customer::gen_request(const Payment_info& pi,
     OUTPUT_STR(oi_md);
     OUTPUT_STR(po_md);
 
-    return std::array<std::string, 5>{pdo, digital_envelope, pi_md, oi_str, dual_signature};
+    send_to_merchant(pdo);
+    send_to_merchant(digital_envelope);
+    send_to_merchant(pi_md);
+    send_to_merchant(oi_str);
+    send_to_merchant(dual_signature);
 }
 
 void Customer::send_to_bank(const std::string& message) const

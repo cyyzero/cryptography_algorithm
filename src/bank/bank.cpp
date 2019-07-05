@@ -22,7 +22,7 @@ uint32_t get_int(const char* l)
 };
 
 Bank::Bank()
-  : RSA(8), Server(BANK_PORT)
+  : RSA(8), Server(BANK_PORT), ready(false)
 {
     set_msg_callback([this] (const std::string& msg) {
         this->on_message1(msg);
@@ -35,7 +35,18 @@ Bank::Bank()
 
 }
 
-void Bank::process_order(const std::string& pdo, const std::string& digital_envelope)
+void Bank::run()
+{
+    for (;;)
+    {
+        std::unique_lock<std::mutex> lk(m);
+        cv.wait(lk, [this]{return ready;});
+        process_order();
+        ready = false;
+    }
+}
+
+void Bank::process_order() const
 {
     
     uint64_t num = *(uint64_t*)decryptByPrivate(digital_envelope).data();
@@ -63,7 +74,15 @@ void Bank::process_order(const std::string& pdo, const std::string& digital_enve
 
     auto po_md2 = SHA512(pi_md + oi_md).get_hash();
 
-    assert(po_md1 == po_md2);
+    if (po_md1 == po_md2)
+    {
+        std::cout << "!!! OK  !!!" << std::endl;
+    }
+    else
+    {
+        std::cout << "!!! NOT MATCH !!!" << std::endl;
+    }
+    
 }
 
 void Bank::on_message1(const std::string& msg)
@@ -86,20 +105,17 @@ void Bank::on_message2(const std::string& msg)
     });
 }
 
-void Bank::on_message2(const std::string& msg)
-{
-    digital_envelope = msg;
-    set_msg_callback([this] (const std::string& msg) {
-        this->on_message3(msg);
-    });
-}
-
 void Bank::on_message3(const std::string& msg)
 {
     digital_envelope = msg;
     set_msg_callback([this] (const std::string& msg) {
         this->on_message2(msg);
     });
+    {
+        std::lock_guard<std::mutex> lk(m);
+        ready = true;
+    }
+    cv.notify_one();
 }
 
 void Bank::send_to_customer(const std::string& msg) const

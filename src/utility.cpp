@@ -57,7 +57,7 @@ void send_msg(const std::string &msg, int port)
     server.sin_addr.s_addr = inet_addr("127.0.0.1");
     server.sin_port = htons(port);
 
-    if (0 > (ret = connect(sockfd, (struct sockaddr *)&server, sizeof(struct sockaddr))))
+    if (0 != (ret = connect(sockfd, (struct sockaddr *)&server, sizeof(struct sockaddr))))
     {
         perror("connect error");
         close(sockfd);

@@ -1,5 +1,5 @@
-10001 BC5 n: 7429
+10001 5AE9 n: ADE9
 Wait for accept
 call msg_callback: 
-Bank recv customer : 10001 7429
+Bank recv customer : 10001 5B99
 Wait for accept
