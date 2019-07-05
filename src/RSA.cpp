@@ -13,18 +13,20 @@
  */
 void RSA::init(const unsigned len)
 {
-    srand((unsigned)time(NULL));
-    // 产生大素数p和q
-    p = createPrime(len, 15); // 出错概率为(1/4)^15
-    q = createPrime(len, 15);
-    // 计算出n
-    n = p * q;
-    n_len = n.toString().size() / 2;
-    std::cout << n.toString() << std::endl;
-    // 计算出n的欧拉函数
-    eul = (p - 1) * (q - 1);
-    // 设置加解密指数e和d
-    createExponent(eul);
+    do {
+        // 产生大素数p和q
+        p = createPrime(len, 15); // 出错概率为(1/4)^15
+        q = createPrime(len, 15);
+        // 计算出n
+        n = p * q;
+        n_len = n.toString().size() / 2;
+        // 计算出n的欧拉函数
+        eul = (p - 1) * (q - 1);
+        // 设置加解密指数e和d
+        createExponent(eul);
+    } while (n.toString().size() != 4);
+    std::cout << p << " " << q << " ";
+    std::cout << "n: " << n << std::endl;
 }
 
 RSA::Key RSA::get_public_key() const
@@ -50,13 +52,13 @@ BigInteger RSA::decryptByPrivate(const BigInteger &c) const
     return c.modPow(d, n);
 }
 
-std::string RSA::encryptByPublic(const std::string &m) const
+std::string RSA::encryptByPublic(const std::string& m) const
 {
     std::string res;
     size_t i;
     for (i = 0; i < m.size(); i++)
     {
-        auto to_append = encryptByPublic(BigInteger((long long)m[i])).toString();
+        auto to_append = encryptByPublic(BigInteger((long long)m[i] & 0xff)).toString();
         while (to_append.size() % 4 != 0)
             to_append = "0" + to_append;
         assert(to_append.size() == 4);
@@ -112,7 +114,7 @@ std::string RSA::encryptByPrivate(const std::string &m) const
     size_t i;
     for (i = 0; i < m.size(); i++)
     {
-        auto to_append = encryptByPrivate(BigInteger((long long)m[i])).toString();
+        auto to_append = encryptByPrivate(BigInteger((long long)m[i] & 0xff)).toString();
         while (to_append.size() % 4 != 0)
             to_append = "0" + to_append;
         assert(to_append.size() == 4);
@@ -283,7 +285,7 @@ std::string RSA::encryptByPublic(const std::string& m, const RSA::Key& key)
     size_t i;
     for (i = 0; i < m.size(); i++)
     {
-        auto to_append = encryptByPublic(BigInteger((long long)m[i]), key).toString();
+        auto to_append = encryptByPublic(BigInteger((unsigned long long)m[i] & 0xff), key).toString();
         while (to_append.size() % 4 != 0)
             to_append = "0" + to_append;
         assert(to_append.size() == 4);
