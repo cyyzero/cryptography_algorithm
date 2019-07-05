@@ -28,8 +28,8 @@ void Merchant::run()
 
 void Merchant::process_customer() const
 {
-    send_to_customer(pdo);
-    send_to_customer(digital_envelope);
+    send_to_bank(pdo);
+    send_to_bank(digital_envelope);
     auto po_md1 = RSA::decryptByPublic(dual_signature, customer_key);
 
     auto oi_md = SHA512(oi).get_hash();

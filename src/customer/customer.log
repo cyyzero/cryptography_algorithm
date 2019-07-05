@@ -1,13 +1,17 @@
-10001 12E1 n: 5B99
+10001 881 n: 2AA9
 Wait for accept
 call msg_callback: 
-Customer recv bank : 10001 ADE9
+Customer recv bank : 10001 8659
 Wait for accept
-ks1: 1550927372
-connect error: Connection refused
+ks1: 1604817272
 len: 16 256 64
 oi_str : 10000000e83000000
 pi_str : 10000000e83000000
 pi_md : 1d52516645b584d54b08feef08a621aef874f61818e65d7d5c77c43e957df922ee41165f7bfcf721b58d5ab375997b16ec20113fcff2e7b75487b25184c1
 oi_md : 1d52516645b584d54b08feef08a621aef874f61818e65d7d5c77c43e957df922ee41165f7bfcf721b58d5ab375997b16ec20113fcff2e7b75487b25184c1
 po_md : 2a5c4323b7e4b3e3a4fc7b2c9988988bc8bbfabe5f24396d3a6566a4d289759596d673c729bb72da7216cdea6c3ce660bdeb73f94279c5b8886195044c465
+send pdo
+send de
+send pi_md
+send oi
+send ds

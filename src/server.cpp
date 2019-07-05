@@ -63,7 +63,7 @@ void Server::run() const
         if (-1 == (connectd = accept(listend, (struct sockaddr *)&client, &len)))
         {
             perror("create connect socket error\n");
-            continue;
+            exit(1);
         }
 
         for(;;)

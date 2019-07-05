@@ -69,10 +69,15 @@ void Customer::gen_request(const Payment_info& pi,
     OUTPUT_STR(oi_md);
     OUTPUT_STR(po_md);
 
+    std::cout << "send pdo" << std::endl;
     send_to_merchant(pdo);
+    std::cout << "send de" << std::endl;
     send_to_merchant(digital_envelope);
+    std::cout << "send pi_md" << std::endl;
     send_to_merchant(pi_md);
+    std::cout << "send oi" << std::endl;
     send_to_merchant(oi_str);
+    std::cout << "send ds" << std::endl;
     send_to_merchant(dual_signature);
 }
 

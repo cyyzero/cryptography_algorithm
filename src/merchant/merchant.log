@@ -1,5 +1,21 @@
-10001 5AE9 n: ADE9
+10001 5FD5 n: 8659
 Wait for accept
 call msg_callback: 
-Merchant recv customer : 10001 5B99
+Merchant recv customer : 10001 2AA9
 Wait for accept
+call msg_callback: 
+Wait for accept
+call msg_callback: 
+Wait for accept
+call msg_callback: 
+Wait for accept
+call msg_callback: 
+Wait for accept
+call msg_callback: 
+Wait for accept
+oi : 10000000e83000000
+oi_md : 1d52516645b584d54b08feef08a621aef874f61818e65d7d5c77c43e957df922ee41165f7bfcf721b58d5ab375997b16ec20113fcff2e7b75487b25184c1
+pi_md : 1d52516645b584d54b08feef08a621aef874f61818e65d7d5c77c43e957df922ee41165f7bfcf721b58d5ab375997b16ec20113fcff2e7b75487b25184c1
+po_md1 : 2a5c4323b7e4b3e3a4fc7b2c9988988bc8bbfabe5f24396d3a6566a4d289759596d673c729bb72da7216cdea6c3ce660bdeb73f94279c5b8886195044c465
+po_md2 : 2a5c4323b7e4b3e3a4fc7b2c9988988bc8bbfabe5f24396d3a6566a4d289759596d673c729bb72da7216cdea6c3ce660bdeb73f94279c5b8886195044c465
+!!! OK  !!!
