@@ -25,7 +25,7 @@ void RSA::init(const unsigned len)
         // 设置加解密指数e和d
         createExponent(eul);
     } while (n.toString().size() != 4);
-    std::cout << p << " " << q << " ";
+    std::cout << e << " " << d << " ";
     std::cout << "n: " << n << std::endl;
 }
 

@@ -4,6 +4,16 @@
 #include <iostream>
 #include <cassert>
 
+Merchant::Merchant()
+  : RSA(8), Server(MERCHANT_PORT)
+{
+    set_msg_callback([this] (const std::string& msg) {
+        this->on_message1(msg);
+    });
+        using namespace std::chrono_literals;
+    std::this_thread::sleep_for(2s);
+}
+
 void Merchant::process_customer(const std::string& pdo,
                                 const std::string& digital_envelope,
                                 const std::string& pi_md,
@@ -26,4 +36,21 @@ void Merchant::process_customer(const std::string& pdo,
     OUTPUT_STR(po_md2);
 
     assert(po_md1 == po_md2);
+}
+
+void Merchant::on_message1(const std::string& msg)
+{
+    auto pos = msg.find(' ');
+    BigInteger e(std::string(msg, 0, pos));
+    BigInteger n(std::string(msg, pos + 1));
+    customer_key = RSA::Key(e, n);
+    std::cout << "Merchant recv customer : " << e << " " << n << std::endl;
+    Server::set_msg_callback([this] (const std::string& msg) {
+        this->on_message2(msg);
+    });
+}
+
+void Merchant::on_message2(const std::string& msg)
+{
+    
 }

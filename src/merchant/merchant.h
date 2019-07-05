@@ -3,12 +3,12 @@
 
 #include <string>
 #include "RSA.h"
+#include "server.h"
 
-class Merchant : public RSA
+class Merchant : public RSA, public Server
 {
 public:
-    Merchant()
-        : RSA(8) { }
+    Merchant();
 
     void send_to_customer(const std::string& msg) const;
     void send_to_bank(const std::string& msg) const;
@@ -27,7 +27,13 @@ public:
     {
         bank_key = key;
     }
+
 private:
+
+    void on_message1(const std::string& msg);
+
+    void on_message2(const std::string& msg);
+
     RSA::Key customer_key;
     RSA::Key bank_key;
 };

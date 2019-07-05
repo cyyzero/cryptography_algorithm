@@ -3,7 +3,7 @@
 #include "des.h"
 
 #include "utility.h"
-
+#include "utility.h"
 #include <cassert>
 namespace
 {
@@ -16,6 +16,22 @@ void str_append_int(std::string& str, uint32_t len)
     }
 }
 };
+
+
+Customer::Customer()
+    : RSA(8), Server(6666)
+{
+    Server::set_msg_callback([this] (const std::string& msg) {
+        this->on_message1(msg);
+    });
+
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(2s);
+    auto key = get_public_key();
+    auto key_str = key.first.toString() + " " + key.second.toString();
+    send_to_bank(key_str);
+    send_to_merchant(key_str);
+}
 
 std::array<std::string, 5> Customer::gen_request(const Payment_info& pi,
                                      const Order_info& oi) const
@@ -56,6 +72,16 @@ std::array<std::string, 5> Customer::gen_request(const Payment_info& pi,
     return std::array<std::string, 5>{pdo, digital_envelope, pi_md, oi_str, dual_signature};
 }
 
+void Customer::send_to_bank(const std::string& message) const
+{
+    send_msg(message, BANK_PORT);
+}
+
+void Customer::send_to_merchant(const std::string& message) const
+{
+    send_msg(message, MERCHANT_PORT);
+}
+
 void Customer::set_merchant_key(const RSA::Key& key)
 {
     merchant_key = key;
@@ -64,4 +90,22 @@ void Customer::set_merchant_key(const RSA::Key& key)
 void Customer::set_bank_key(const RSA::Key& key)
 {
     bank_key = key;
+}
+
+void Customer::on_message1(const std::string& msg)
+{
+    auto pos = msg.find(' ');
+    BigInteger e(std::string(msg, 0, pos));
+    BigInteger n(std::string(msg, pos + 1));
+    bank_key = RSA::Key(e, n);
+    std::cout << "Customer recv bank : " << e << " " << n << std::endl;
+
+    Server::set_msg_callback([this] (const std::string& msg) {
+        this->on_message2(msg);
+    });
+}
+
+void Customer::on_message2(const std::string& msg)
+{
+    
 }

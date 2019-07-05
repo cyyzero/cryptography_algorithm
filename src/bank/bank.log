@@ -1,0 +1,5 @@
+10001 BC5 n: 7429
+Wait for accept
+call msg_callback: 
+Bank recv customer : 10001 7429
+Wait for accept
