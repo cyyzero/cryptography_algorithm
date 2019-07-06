@@ -12,6 +12,7 @@ struct Payment_info
 struct Order_info
 {
     uint64_t account_id;
+    uint64_t target_account_id;
     uint64_t money;
 };
 

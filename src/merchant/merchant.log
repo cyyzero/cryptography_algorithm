@@ -1,9 +1,7 @@
-10001 29B1 n: 4469
+10001 3B81 n: 4C3F
 Wait for accept
 call msg_callback: 
-Merchant recv customer : 10001 250F
-Wait for accept
-call msg_callback: 
+Merchant recv customer : 10001 1765
 Wait for accept
 call msg_callback: 
 Wait for accept
@@ -13,9 +11,27 @@ call msg_callback:
 Wait for accept
 call msg_callback: 
 Wait for accept
-oi : 10000000e83000000
-oi_md : 1d52516645b584d54b08feef08a621aef874f61818e65d7d5c77c43e957df922ee41165f7bfcf721b58d5ab375997b16ec20113fcff2e7b75487b25184c1
+call msg_callback: 
+Wait for accept
+oi : 1000000020000000e83000000
+oi_md : cbee1c3a46b3303ebf6af18c69be2275ed1ec3898589acc146f9c12ba7b96fb23d75624de8377477c94c819f8897377c18997558121bc2d159f3a37fdf9
 pi_md : 1d52516645b584d54b08feef08a621aef874f61818e65d7d5c77c43e957df922ee41165f7bfcf721b58d5ab375997b16ec20113fcff2e7b75487b25184c1
-po_md1 : 2a5c4323b7e4b3e3a4fc7b2c9988988bc8bbfabe5f24396d3a6566a4d289759596d673c729bb72da7216cdea6c3ce660bdeb73f94279c5b8886195044c465
-po_md2 : 2a5c4323b7e4b3e3a4fc7b2c9988988bc8bbfabe5f24396d3a6566a4d289759596d673c729bb72da7216cdea6c3ce660bdeb73f94279c5b8886195044c465
+po_md1 : b46684f305054abff88330dcde4ebcc2c54bcaaee1cf92e980a45fae5255eb4c3b1f17f22a879c1bed1628eb46b8e6e6856378fe3c8afd2be2a676abe0
+po_md2 : b46684f305054abff88330dcde4ebcc2c54bcaaee1cf92e980a45fae5255eb4c3b1f17f22a879c1bed1628eb46b8e6e6856378fe3c8afd2be2a676abe0
+!!! OK  !!!
+call msg_callback: 
+Wait for accept
+call msg_callback: 
+Wait for accept
+call msg_callback: 
+Wait for accept
+call msg_callback: 
+Wait for accept
+call msg_callback: 
+Wait for accept
+oi : 2000000020000000d07000000
+oi_md : 2e9b37a478a5335526ef2ee2a87f1943234acc45d768296b13f2564ec8062c329e4f7b99949c7972cfa1e59ed9b4a4228821d6e1cb59ec33e6899bb9d
+pi_md : 6569ae7535ced011449f982de3491a1baa5ec4e17d4a0adceca5c21ed1655862e239b404eb9fe6032aef1a6adba154a5ee1167c6f3b7b45d317d05d4a09d65
+po_md1 : 7416c9c546acd6e67f1a2edaa31a3ad1d8c597bd7264de52c92af8997ae7e3e3b234b7c9c75921642e4e83d7c81af17bb5cad121c3d1b4d4a177a749642
+po_md2 : 7416c9c546acd6e67f1a2edaa31a3ad1d8c597bd7264de52c92af8997ae7e3e3b234b7c9c75921642e4e83d7c81af17bb5cad121c3d1b4d4a177a749642
 !!! OK  !!!

@@ -21,8 +21,15 @@ int main()
 
     Order_info oi;
     oi.account_id = 1;
+    oi.target_account_id = 2;
     oi.money = 1000;
 
     customer.gen_request(pi, oi);
     std::this_thread::sleep_for(2s);
+    pi.comm_id = 2;
+    pi.money = 1000;
+    oi.account_id = 2;
+    oi.target_account_id = 2;
+    oi.money = 2000;
+    customer.gen_request(pi, oi);
 }

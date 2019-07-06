@@ -10,7 +10,4 @@ int main()
         ::sleep(2);
     Bank bank;
     bank.run();
-    ::sleep(2);
-
-
 }

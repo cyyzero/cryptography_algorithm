@@ -27,7 +27,7 @@ void Server::run() const
     struct sockaddr_in client;
     socklen_t len;
     int listend;
-    int connectd;
+    int connectfd;
     int sendnum;
     int opt;
     int recvnum;
@@ -60,7 +60,7 @@ void Server::run() const
     {
         std::string msg;
         std::cout << "Wait for accept" << std::endl;
-        if (-1 == (connectd = accept(listend, (struct sockaddr *)&client, &len)))
+        if (-1 == (connectfd = accept(listend, (struct sockaddr *)&client, &len)))
         {
             perror("create connect socket error\n");
             exit(1);
@@ -68,7 +68,7 @@ void Server::run() const
 
         for(;;)
         {
-            recvnum = recv(connectd, recv_buf, sizeof(recv_buf), 0);
+            recvnum = recv(connectfd, recv_buf, sizeof(recv_buf), 0);
             if (recvnum == -1)
             {
                 perror("recv error\n");
@@ -85,7 +85,7 @@ void Server::run() const
                 msg.append(recv_buf, recvnum);
             }
         }
-        close(connectd);
+        close(connectfd);
     }
     close(listend);
 }
