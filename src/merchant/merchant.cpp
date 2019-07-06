@@ -1,6 +1,6 @@
 #include "merchant.h"
 #include "sha.h"
-#include  "utility.h"
+#include "utility.h"
 #include <iostream>
 #include <cassert>
 #include <thread>
@@ -26,8 +26,9 @@ void Merchant::run()
     }
 }
 
-void Merchant::process_customer() const
+void Merchant::process_customer()
 {
+    // pdo[20] = 0x66;
     send_to_bank(pdo);
     send_to_bank(digital_envelope);
     auto po_md1 = RSA::decryptByPublic(dual_signature, customer_key);

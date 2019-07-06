@@ -13,7 +13,7 @@ public:
     Merchant();
     
     void run();
-    void process_customer() const;
+    void process_customer();
 
     void set_customer_key(const RSA::Key& key)
     {

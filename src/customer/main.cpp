@@ -1,15 +1,17 @@
 #include "customer.h"
-#include <unistd.h>
+#include "sys/time.h"
 #include "info.h"
 
 #include <thread>
+#include <unistd.h>
 
 int main()
 {
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(2s);
-    
-    srand(time(NULL));
+    struct timeval tv;
+    ::gettimeofday(&tv, 0);
+    srand(tv.tv_usec);
     Customer customer;
     std::this_thread::sleep_for(2s);
     

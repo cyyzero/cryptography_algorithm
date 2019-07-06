@@ -1,7 +1,7 @@
-10001 5FD5 n: 8659
+10001 29B1 n: 4469
 Wait for accept
 call msg_callback: 
-Merchant recv customer : 10001 2AA9
+Merchant recv customer : 10001 250F
 Wait for accept
 call msg_callback: 
 Wait for accept

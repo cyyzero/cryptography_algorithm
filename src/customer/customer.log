@@ -1,9 +1,9 @@
-10001 881 n: 2AA9
+10001 12E1 n: 250F
 Wait for accept
 call msg_callback: 
-Customer recv bank : 10001 8659
+Customer recv bank : 10001 20CF
 Wait for accept
-ks1: 1604817272
+ks1: 900676598
 len: 16 256 64
 oi_str : 10000000e83000000
 pi_str : 10000000e83000000

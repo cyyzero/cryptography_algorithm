@@ -45,7 +45,7 @@ void Customer::gen_request(const Payment_info& pi,
     auto dual_signature = encryptByPrivate(po_md);
     auto po_md1 = decryptByPublic(dual_signature);
     
-    assert(po_md == decryptByPublic(dual_signature));
+    // assert(po_md == decryptByPublic(dual_signature));
     uint64_t num = random();
     Block ks(num);
     std::cout << "ks1: " << num << std::endl;
